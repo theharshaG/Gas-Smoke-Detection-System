@@ -1,0 +1,43 @@
+/*
+  Project: Gas & Smoke Detection System
+  Board  : ESP32
+  Sensor : MQ-2 Gas Sensor
+
+  Description:
+  - Reads gas concentration from MQ-2 sensor
+  - Displays gas level and air quality status
+  - Helps detect LPG, methane, smoke, and gas leaks
+*/
+
+#define GAS_PIN 34   // MQ-2 Analog Output pin
+
+int gasValue = 0;
+
+void setup() {
+  Serial.begin(9600);
+  Serial.println("Gas & Smoke Detection System Started");
+}
+
+void loop() {
+  gasValue = analogRead(GAS_PIN);
+
+  Serial.print("Gas Sensor Value: ");
+  Serial.println(gasValue);
+
+  // Air quality classification
+  if (gasValue < 500) {
+    Serial.println("Status: Clean Air");
+  }
+  else if (gasValue >= 700 && gasValue < 1200) {
+    Serial.println("Status: LPG / Propane Detected");
+  }
+  else if (gasValue >= 1200 && gasValue < 2000) {
+    Serial.println("Status: Methane / Natural Gas Detected");
+  }
+  else {
+    Serial.println("WARNING! Smoke or Heavy Gas Leak Detected");
+  }
+
+  Serial.println("----------------------------------");
+  delay(2000);   // Read every 2 seconds
+}
